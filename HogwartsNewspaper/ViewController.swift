@@ -51,15 +51,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let refImage = imageAnchor.referenceImage
         
+        var videoScene = SKScene()
+        
+        if refImage.name == "harry-potter" {
+            print("harry potter image detected")
+            let videoNode = SKVideoNode(fileNamed: "harry-potter.mp4")
+            videoNode.play()
+            videoScene.size = CGSize(width: 480, height: 204)
+            videoNode.position = .init(x: videoScene.size.width/2, y: videoScene.size.height/2)
+            videoNode.yScale = -1
+            videoScene.addChild(videoNode)
+        }
+        
         let imagePlane = SCNPlane(width: refImage.physicalSize.width, height: refImage.physicalSize.height)
+        imagePlane.firstMaterial?.diffuse.contents = videoScene
         
         let imageNode = SCNNode(geometry: imagePlane)
         imageNode.eulerAngles.x = -.pi/2
         node.addChildNode(imageNode)
-        
-        if refImage.name == "harry-potter" {
-            print("harry potter image detected")
-        }
      
         return node
     }
